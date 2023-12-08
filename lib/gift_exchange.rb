@@ -32,7 +32,7 @@ class GiftExchange
       valid = players[from] != players[to.first] &&
               players[from] != players[to.last]  &&
               to.first      != to.last
-      puts "is invalid: #{from} => #{to}" if !valid && !ENV["test"]
+      puts "is invalid: #{from} => #{to}\n\n" if !valid && !ENV["test"]
       valid
     end
   end
