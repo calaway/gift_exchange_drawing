@@ -5,39 +5,39 @@ require './lib/gift_exchange'
 RSpec.describe GiftExchange do
   describe "#get_players" do
     it "reads in the file" do
-      filename = "participants_input.txt"
+      filename = "spec/participants_input_test.txt"
       gift = GiftExchange.new(filename)
 
       all_lines = gift.get_players(filename)
 
-      expect(all_lines.first).to eq("Dad         1\n")
-      expect(all_lines.last).to eq("Geoff       5\n")
+      expect(all_lines.first).to eq("Jenn        1\n")
+      expect(all_lines.last).to eq("Geoff       4\n")
     end
   end
 
   describe "#parse_players" do
     it "turns the lines into a hash" do
-      filename = "participants_input.txt"
+      filename = "spec/participants_input_test.txt"
       gift = GiftExchange.new(filename)
 
       lines = gift.get_players(filename)
       players = gift.parse_players(lines)
 
-      expect(players.count).to eq(8)
-      expect(players["Ryanne"]).to eq(3)
-      expect(players["Geoff"]).to eq(5)
+      expect(players.count).to eq(6)
+      expect(players["Ryanne"]).to eq(2)
+      expect(players["Geoff"]).to eq(4)
     end
   end
 
   describe "#assign" do
     it "returns a from/to assignment hash" do
-      filename = "participants_input.txt"
+      filename = "spec/participants_input_test.txt"
       gift = GiftExchange.new(filename)
 
       assignment = gift.assign
 
       expect(assignment.class).to eq(Hash)
-      expect(assignment.count).to eq(8)
+      expect(assignment.count).to eq(6)
       expect(assignment.keys.sort).to eq(gift.players.keys.sort)
       expect(assignment.values.map { |pair| pair.first }.sort).to eq(gift.players.keys.sort)
       expect(assignment.values.map { |pair| pair.last }.sort).to eq(gift.players.keys.sort)
@@ -46,7 +46,7 @@ RSpec.describe GiftExchange do
 
   describe "#valid?" do
     it "(in)validates assignment" do
-      filename = "participants_input.txt"
+      filename = "spec/participants_input_test.txt"
       gift = GiftExchange.new(filename)
 
       assignment1 = {"Dad"        =>["Ryanne",      "Ryan"],
@@ -82,19 +82,19 @@ RSpec.describe GiftExchange do
 
   describe "#run" do
     it "generates random assignements until one is valid" do
-      filename = "participants_input.txt"
+      filename = "spec/participants_input_test.txt"
       gift = GiftExchange.new(filename)
 
       matchies = GiftExchange.run(filename)
 
-      expect(matchies.count).to eq(8)
+      expect(matchies.count).to eq(6)
       expect(gift.valid?(matchies)).to eq(true)
     end
   end
 
   describe "#compose_email" do
     xit "composes an email for each participant" do
-      filename = "participants_input.txt"
+      filename = "spec/participants_input_test.txt"
       gift = GiftExchange.new(filename)
       assignment = {"Dad"        =>["Christopher", "Jenn"],
                     "Mom"        =>["Geoff",       "Christopher"],
@@ -110,7 +110,7 @@ RSpec.describe GiftExchange do
 
     describe "#invert" do
       it "inverts assignments hash by finding who has drawn each person" do
-        filename = "participants_input.txt"
+        filename = "spec/participants_input_test.txt"
         gift = GiftExchange.new(filename)
         assignment = {"Dad"        =>["Christopher", "Jenn"],
                       "Mom"        =>["Geoff",       "Christopher"],
